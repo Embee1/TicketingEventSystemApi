@@ -13,7 +13,7 @@ interface JwtPayload{
 export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
     constructor(configService: ConfigService){
          super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest:  ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: configService.get<string>('JWT_REFRESH_TOKEN_SECRET')
          });
     }

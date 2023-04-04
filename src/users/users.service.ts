@@ -19,6 +19,11 @@ export interface JWTToken {
   refreshToken: string;
 }
 
+export enum UserRole{
+  USER = 'user',
+  ADMIN = 'admin'
+}
+
 @Injectable()
 export class UsersService {
 

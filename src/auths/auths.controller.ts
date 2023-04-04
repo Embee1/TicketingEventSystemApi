@@ -7,7 +7,8 @@ import { CreateOrganizationUserDto } from 'src/users/dto/create-OrganizationUder
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
 import { UsersService } from 'src/users/users.service';
 import { RefreshTokenDto } from 'src/users/refresh-token.dto';
-import { AccessTokenGuard } from './guard/access-token-strategy';
+import { AccessTokenGuard } from './guard/access-token-guard';
+import { AuthGuard } from '@nestjs/passport';
 
 
 @Controller('auths')
@@ -28,8 +29,8 @@ export class AuthsController {
     return  this.userService.registerr(register);
   } 
 
-//login user individual
-// @UseGuards(AccessTokenGuard)
+// //login user individual
+
 @Post('login')
 async login(@Body() loginUserDto: LoginUserDto){
   return await this.userService.login
@@ -37,6 +38,7 @@ async login(@Body() loginUserDto: LoginUserDto){
 }
 
 //login user organization
+
 @Post('loginn')
 async loginOrganization(@Body() loginUserDto: LoginUserDto){
   return await this.userService.loginOrganization
@@ -69,12 +71,14 @@ async refreshToken2(@Body() {refreshToken}: RefreshTokenDto){
 //   }
 
 // find update individual user by email
+//@UseGuards(AccessTokenGuard)
 @Patch(':id')
  async update(@Body('id') id: number, @Body() email: string) {
     return this.userService.update(id, email);
 }
 
 // find update individual user by password
+@UseGuards(AuthGuard('jwt'))
 @Patch(':id')
  async updatee(@Body('id') id: number, @Body() password: string) {
     return this.userService.update(id, password);
@@ -82,12 +86,14 @@ async refreshToken2(@Body() {refreshToken}: RefreshTokenDto){
 
 
 // find update Organization user by email
+@UseGuards(AuthGuard('jwt'))
 @Patch(':id')
  async updatee2(@Body('id') id: number, @Body() email: string) {
     return this.userService.update(id, email);
 }
 
 // find update Organization user by password
+@UseGuards(AuthGuard('jwt'))
 @Patch(':id')
  async update2(@Body('id') id: number, @Body() password: string) {
     return this.userService.update(id, password);
