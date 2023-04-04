@@ -28,7 +28,7 @@ import { paymentEntity } from './users/Payment/payment-entity';
       password: '',
       database: 'event',
       entities: [UserIndividualEntity, UserOrganizationEntity, EventEntity, TicketEntity, paymentEntity],
-      synchronize: true,
+      synchronize: false,
     }),
     
     TypeOrmModule.forFeature([UserIndividualEntity, UserOrganizationEntity, EventEntity, TicketEntity, paymentEntity]),
