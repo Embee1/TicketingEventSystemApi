@@ -12,7 +12,8 @@ import { ConfigModule } from '@nestjs/config';
 import { AccessTokenStrategy } from './auths/passport-strategy/access-token.strategy';
 import { EventEntity } from './events/entities/event.entity';
 import { TicketEntity } from './tickets/entities/ticket.entity';
-import { paymentEntity } from './users/Payment/payment-entity';
+import { PaymentEntity } from './users/Payment/payment-entity';
+import { LoginUserEntity } from './users/entities/login-userEntity';
 
 
 @Module({
@@ -23,15 +24,15 @@ import { paymentEntity } from './users/Payment/payment-entity';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 3307,
+      port: 3306,
       username: 'root',
       password: '',
       database: 'event',
-      entities: [UserIndividualEntity, UserOrganizationEntity, EventEntity, TicketEntity, paymentEntity],
-      synchronize: false,
+      entities: [UserIndividualEntity, UserOrganizationEntity, EventEntity, TicketEntity, PaymentEntity, LoginUserEntity],
+      synchronize: true,
     }),
     
-    TypeOrmModule.forFeature([UserIndividualEntity, UserOrganizationEntity, EventEntity, TicketEntity, paymentEntity]),
+    TypeOrmModule.forFeature([UserIndividualEntity, UserOrganizationEntity, EventEntity, TicketEntity, PaymentEntity, LoginUserEntity]),
     
     EventsModule, TicketsModule, UsersModule, AuthsModule, ],
   controllers: [AppController],

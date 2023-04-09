@@ -1,14 +1,15 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
-export class paymentEntity{
+export class PaymentEntity{
 @PrimaryGeneratedColumn('uuid')
 id: number;
 
 @Column({type: "varchar"})
+token: string;
 
 @Column({type: 'int'})
-user_id: number;
+userId: number;
 
 @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
 public created_at: Date;

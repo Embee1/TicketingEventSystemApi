@@ -10,7 +10,17 @@ import { CreateOrganizationUserDto } from './dto/create-OrganizationUder.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { UpdateAuthDto } from 'src/auths/dto/update-auth.dto';
+import { PaymentEntity, } from './Payment/payment-entity';
+import { LoginUserEntity } from './entities/login-userEntity';
+import * as bcrypt from 'bcrypt'
+import { error, log } from 'console';
+import { encryptData, decryptData} from './utils/encrypt';
+import { PaymentDto } from './Payment/payment.dto';
+
+
+// import { PaymentDto } from './Payment/payment.dto';
+// import { createCipheriv, randomBytes, scrypt } from 'crypto';
+// import { promisify } from 'util';
 
 
 
@@ -31,6 +41,10 @@ constructor(
   @InjectRepository(UserIndividualEntity, ) private userRepository: Repository<UserIndividualEntity>,
 
   @InjectRepository(UserOrganizationEntity,) private userRepo: Repository<UserOrganizationEntity>,
+
+  @InjectRepository(PaymentEntity) private paymentRepository: Repository<PaymentEntity>,
+
+  @InjectRepository(LoginUserEntity) private loginRepo: Repository<LoginUserEntity>,
 
   private readonly jwtService: JwtService,
 
@@ -253,7 +267,47 @@ async refreshToken2(token: string): Promise<JWTToken>{
     
   }
 
+   //get payment details
+  async findAllPayment():Promise<PaymentEntity[]> {
+    return this.paymentRepository.find()
+  }
 
+async createToken(id: number): Promise<PaymentEntity>{
+
+  const token = Math.random().toString(20).substr(2, 20)
+
+
+  const forgot = await this.paymentRepository.create({
+    id,
+    token
+  });
+
+return forgot
+
+}
+
+
+
+async loginUser(email: string, password: string): Promise<string>{
+const user = await this.loginRepo.findOneBy({email});
+if(user){
+  const match = await bcrypt.compare(password, user.password);
+if(match) return 'Credentials are correct!';
+return 'invalid credentials!';
+}
+return 'invalid Invalid!';
+}
+
+async sendMessage(token:string): Promise<object>{
+const encrypedMessage = encryptData(token);
+const decryptedMessage = decryptData(encrypedMessage);
+
+return {
+  'Encrypted Message': encrypedMessage.toString(),
+'Decrypted Message': decryptedMessage.toString(),
+}
+}
+  };
 
   
-}
+

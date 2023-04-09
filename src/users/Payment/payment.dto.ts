@@ -1,11 +1,11 @@
 import { IsNotEmpty } from "class-validator";
 
-export class paymentDto{
+export class PaymentDto{
     @IsNotEmpty()
     token: string;
 
     @IsNotEmpty()
-    user_id: number;
+    id: number;
 
 
 }

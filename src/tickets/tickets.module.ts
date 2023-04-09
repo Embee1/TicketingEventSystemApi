@@ -8,13 +8,14 @@ import { EventEntity } from 'src/events/entities/event.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { AccessTokenStrategy } from 'src/auths/passport-strategy/access-token.strategy';
 import { TicketEntity } from './entities/ticket.entity';
-import { paymentEntity } from 'src/users/Payment/payment-entity';
+import { PaymentEntity} from 'src/users/Payment/payment-entity';
+import { LoginUserEntity } from 'src/users/entities/login-userEntity';
 
 @Module({
   exports: [TicketsService],
   controllers: [TicketsController],
   providers: [TicketsService, AccessTokenStrategy],
-imports: [TypeOrmModule.forFeature([UserIndividualEntity, UserOrganizationEntity, EventEntity, TicketEntity, paymentEntity]),  JwtModule.register({})]
+imports: [TypeOrmModule.forFeature([UserIndividualEntity, UserOrganizationEntity, EventEntity, TicketEntity, PaymentEntity, LoginUserEntity]),  JwtModule.register({})]
   
 })
 export class TicketsModule {}

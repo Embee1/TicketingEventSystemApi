@@ -9,6 +9,10 @@ import { UsersService } from 'src/users/users.service';
 import { RefreshTokenDto } from 'src/users/refresh-token.dto';
 import { AccessTokenGuard } from './guard/access-token-guard';
 import { AuthGuard } from '@nestjs/passport';
+import { PaymentDto} from 'src/users/Payment/payment.dto';
+import { LoginUserEntity } from 'src/users/entities/login-userEntity';
+import { UserIndividualEntity } from 'src/users/entities/user.IndividualEntity';
+import { PaymentEntity } from 'src/users/Payment/payment-entity';
 
 
 @Controller('auths')
@@ -128,8 +132,29 @@ async refreshToken2(@Body() {refreshToken}: RefreshTokenDto){
     return this.authsService.remove(+id);
   }
 
-  // @Post('refreshToken')
-  // refreshToken(@Body() {refreshToken}: RefreshToken){
-  //   return await this.authsService.refreshTokens(refreshToken)
-  // }
+  //get payment details
+  @Get('all')
+  async findAllPayment() {
+    return this.userService.findAll();
+  }
+
+
+
+
+
+@Post('create')
+async createToken(@Body() id: number): Promise<PaymentEntity> {
+ return await this.userService.createToken(id);
 }
+
+@Post('encrypt')
+async sendMessage(@Body() PaymentDto) {
+ const { token } = PaymentDto;
+ return await this.userService.sendMessage(token);
+}
+}
+
+
+
+
+  
